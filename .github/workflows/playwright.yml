@@ -2,7 +2,7 @@ name: QA Automation
 
 on:
   pull_request:
-    branches: [main]
+    branches: [master]
 
   schedule:   #Run CI theo lịch
     - cron: '0 0 * * 2,4,6' #Run at:7:00 am utc + 7, on 3, 5, 7
@@ -10,7 +10,7 @@ on:
   workflow_dispatch:   #Run manually
 
   push:
-    branches: [main]
+    branches: [master]
     tags:   #Run theo tag
       - 'v*'
 
