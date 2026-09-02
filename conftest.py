@@ -32,7 +32,7 @@ VIDEO_DIR.mkdir(exist_ok=True)
 TRACE_DIR.mkdir(exist_ok=True)
 
 # Load username and password
-BASE_URL = os.getenv("DEV_BASE_URL")
+BASE_URL = os.getenv("BASE_URL")
 USERNAME = os.getenv("ADMIN_EMAIL")
 PASSWORD = os.getenv("ADMIN_PASSWORD")
 

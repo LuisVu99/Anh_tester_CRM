@@ -47,9 +47,9 @@ jobs:
         id: test
         run: pytest --alluredir=allure-results -v --tb=short
         env:
-          base_url: ${{ vars.REPO_BASE_URL }}
-          ADMIN_EMAIL: ${{ secrets.admin_email }}
-          ADMIN_PASSWORD: ${{ secrets.admin_password }}
+          BASE_URL: ${{ vars.BASE_URL }}
+          ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
 
       - name: Notify Slack
         if: always()
