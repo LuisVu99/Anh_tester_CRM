@@ -1,0 +1,193 @@
+name: QA Automation
+
+on:
+  pull_request:
+    branches: [main]
+
+  schedule:   #Run CI theo lịch
+    - cron: '0 0 * * 2,4,6' #Run at:7:00 am utc + 7, on 3, 5, 7
+
+  workflow_dispatch:   #Run manually
+
+  push:
+    tags:   #Run theo tag
+      - 'v*'
+
+  release:
+    types: [published] #Run khi release được publish
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    environment: developer
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: pip-${{ hashFiles('requirements.txt') }}
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Install Playwright browsers
+        run: playwright install --with-deps
+
+      - name: Run test
+        id: test
+        run: pytest --alluredir=allure-results -v --tb=short
+        env:
+          base_url: ${{ vars.REPO_BASE_URL }}
+          ADMIN_EMAIL: ${{ secrets.admin_email }}
+          ADMIN_PASSWORD: ${{ secrets.admin_password }}
+
+      - name: Notify Slack
+        if: always()
+        run: |
+          STATUS=${{ job.status }}
+          BRANCH=${{ github.ref_name }}
+          EVENT_NAME=${{ github.event_name }}
+          COMMIT_MSG=$(git log --format=%B -n 1 2>/dev/null || echo "N/A")
+          AUTHOR=$(git log --format=%an -n 1 2>/dev/null || echo "Unknown")
+          
+          # Parse pytest results from test output
+          if [ -f "test_results.txt" ]; then
+            TEST_SUMMARY=$(grep -E "passed|failed|error" test_results.txt | tail -1 | xargs || echo "No test summary found")
+            PASSED=$(echo "$TEST_SUMMARY" | grep -oP '\d+(?=\s+passed)' || echo "0")
+            FAILED=$(echo "$TEST_SUMMARY" | grep -oP '\d+(?=\s+failed)' || echo "0")
+            ERRORS=$(echo "$TEST_SUMMARY" | grep -oP '\d+(?=\s+error)' || echo "0")
+          else
+            PASSED="0"
+            FAILED="0"
+            ERRORS="0"
+          fi
+          
+          # Format branch info
+          if [ "$EVENT_NAME" == "pull_request" ]; then
+            BRANCH_INFO="PR #${{ github.event.number }} → main"
+          else
+            BRANCH_INFO="$BRANCH"
+          fi
+          
+          if [ "$STATUS" == "success" ]; then
+            ICON="✅"
+            COLOR="good"
+          else
+            ICON="❌"
+            COLOR="danger"
+          fi
+
+          curl -X POST -H 'Content-type: application/json' \
+          --data "{
+            \"attachments\": [
+              {
+                \"color\": \"$COLOR\",
+                \"title\": \"$ICON Test Execution Report\",
+                \"fields\": [
+                  {
+                    \"title\": \"Status\",
+                    \"value\": \"$STATUS\",
+                    \"short\": true
+                  },
+                  {
+                    \"title\": \"Branch\",
+                    \"value\": \"$BRANCH_INFO\",
+                    \"short\": true
+                  },
+                  {
+                    \"title\": \"Passed\",
+                    \"value\": \"$PASSED ✅\",
+                    \"short\": true
+                  },
+                  {
+                    \"title\": \"Failed\",
+                    \"value\": \"$FAILED ❌\",
+                    \"short\": true
+                  },
+                  {
+                    \"title\": \"Errors\",
+                    \"value\": \"$ERRORS ⚠️\",
+                    \"short\": true
+                  },
+                  {
+                    \"title\": \"Author\",
+                    \"value\": \"$AUTHOR\",
+                    \"short\": true
+                  },
+                  {
+                    \"title\": \"Commit Message\",
+                    \"value\": \"\`$COMMIT_MSG\`\",
+                    \"short\": false
+                  }
+                ],
+                \"actions\": [
+                  {
+                    \"type\": \"button\",
+                    \"text\": \"View Workflow\",
+                    \"url\": \"https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\"
+                  }
+                ]
+              }
+            ]
+          }" \
+          ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Upload allure results
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results
+          path: allure-results
+
+  allure-report:
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download allure results
+        uses: actions/download-artifact@v4
+        with:
+          name: allure-results
+          path: allure-results
+
+      - name: Checkout gh-pages history
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: gh-pages
+        continue-on-error: true
+
+      - name: Copy history (if exists)
+        run: |
+          mkdir -p allure-results/history
+          if [ -d gh-pages/history ]; then
+            cp -r gh-pages/history allure-results/ || true
+          fi
+
+      - name: Install Allure CLI
+        run: npm install -g allure-commandline
+
+      - name: Generate Allure Report
+        run: allure generate allure-results --clean -o allure-report
+
+      - name: Upload Allure Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report
+          path: allure-report
+
+      - name: Publish to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./allure-report
+          publish_branch: gh-pages

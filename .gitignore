@@ -1,0 +1,85 @@
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Python packaging and build output
+.build/
+build/
+dist/
+*.egg-info/
+pip-wheel-metadata/
+MANIFEST
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+.env/
+
+# Test, coverage, and lint caches
+.pytest_cache/
+.tox/
+.nox/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+.mypy_cache/
+.pyre/
+.ruff_cache/
+.hypothesis/
+
+# Environment variables and local secrets
+.env
+.env.*
+!.env.example
+*.secret
+*secret*.json
+*credentials*.json
+config/*local*
+config/*secret*
+config/*credential*
+
+# Sensitive test data and browser authentication state
+data/login_data.json
+auth/
+*.auth.json
+storage-state*.json
+
+# Playwright and browser artifacts
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# Project-generated test artifacts and reports
+allure-report/
+allure-results/
+screenshots/
+videos/
+traces/
+logs/
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+
+# Operating system files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Local editor settings
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json

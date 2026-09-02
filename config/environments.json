@@ -1,0 +1,17 @@
+{
+  "dev": {
+    "base_url": "https://dev.example.com",
+    "username": "admin_dev",
+    "password": "123456"
+  },
+  "staging": {
+    "base_url": "https://staging.example.com",
+    "username": "admin_stg",
+    "password": "abcdef"
+  },
+  "prod": {
+    "base_url": "https://example.com",
+    "username": "admin_prod",
+    "password": "123456"
+  }
+}
