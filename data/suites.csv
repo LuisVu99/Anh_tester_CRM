@@ -6,25 +6,15 @@
             widget_type: Type of progress bar (invoice, lead, project, task_not_finish)
             expected_fraction: Expected fraction value (e.g., ""3 / 6"")
             expected_percent: Expected percentage value (e.g., ""50.00"")
-        ","88","Verify lead progress bar values","tests","2026-09-02","passed","2026-09-02","TestProgressBars","test_verify_db_main_element_display","",""
-"Verify all header icons are displayed","139","Verify all header icons are displayed","tests","2026-09-02","passed","2026-09-02","TestDashboardDisplay","test_verify_db_main_element_display","",""
-"Verify dashboard menu item is highlighted","61","Verify dashboard menu is highlighted","tests","2026-09-02","passed","2026-09-02","TestDashboardDisplay","test_verify_db_main_element_display","",""
-"Verify left menu is visible on dashboard","84","Verify left menu is visible","tests","2026-09-02","passed","2026-09-02","TestDashboardDisplay","test_verify_db_main_element_display","",""
-"Verify all dashboard widgets are displayed","383","Verify all widgets are displayed","tests","2026-09-02","passed","2026-09-02","TestDashboardDisplay","test_verify_db_main_element_display","",""
-"Verify progress bar fraction and percentage match expected values
-        
-        Args:
-            dashboard_page: Dashboard page object
-            widget_type: Type of progress bar (invoice, lead, project, task_not_finish)
-            expected_fraction: Expected fraction value (e.g., ""3 / 6"")
-            expected_percent: Expected percentage value (e.g., ""50.00"")
-        ","90","Verify task_not_finish progress bar values","tests","2026-09-02","passed","2026-09-02","TestProgressBars","test_verify_db_main_element_display","",""
+        ","81","Verify project progress bar values","tests","2026-09-03","passed","2026-09-03","TestProgressBars","test_verify_db_main_element_display","",""
+"Verify left menu is visible on dashboard","61","Verify left menu is visible","tests","2026-09-03","passed","2026-09-03","TestDashboardDisplay","test_verify_db_main_element_display","",""
+"Verify all header icons are displayed","214","Verify all header icons are displayed","tests","2026-09-03","passed","2026-09-03","TestDashboardDisplay","test_verify_db_main_element_display","",""
 "Verify search results match the search query
         
         Args:
             dashboard_page: Dashboard page object
             search_test_data: Fixture containing search username
-        ","3799","Verify search results match query","tests","2026-09-02","passed","2026-09-02","TestSearchFunctionality","test_verify_db_main_element_display","",""
+        ","4110","Verify search results match query","tests","2026-09-03","passed","2026-09-03","TestSearchFunctionality","test_verify_db_main_element_display","",""
 "Verify progress bar fraction and percentage match expected values
         
         Args:
@@ -32,7 +22,8 @@
             widget_type: Type of progress bar (invoice, lead, project, task_not_finish)
             expected_fraction: Expected fraction value (e.g., ""3 / 6"")
             expected_percent: Expected percentage value (e.g., ""50.00"")
-        ","104","Verify invoice progress bar values","tests","2026-09-02","passed","2026-09-02","TestProgressBars","test_verify_db_main_element_display","",""
+        ","78","Verify invoice progress bar values","tests","2026-09-03","passed","2026-09-03","TestProgressBars","test_verify_db_main_element_display","",""
+"Verify all dashboard widgets are displayed","344","Verify all widgets are displayed","tests","2026-09-03","passed","2026-09-03","TestDashboardDisplay","test_verify_db_main_element_display","",""
 "Verify progress bar fraction and percentage match expected values
         
         Args:
@@ -40,5 +31,14 @@
             widget_type: Type of progress bar (invoice, lead, project, task_not_finish)
             expected_fraction: Expected fraction value (e.g., ""3 / 6"")
             expected_percent: Expected percentage value (e.g., ""50.00"")
-        ","83","Verify project progress bar values","tests","2026-09-02","passed","2026-09-02","TestProgressBars","test_verify_db_main_element_display","",""
-"","63","Verify Dashboard page display successfully after login","tests","2026-09-02","passed","2026-09-02","","test_verify_dashboard_display","",""
+        ","80","Verify task_not_finish progress bar values","tests","2026-09-03","passed","2026-09-03","TestProgressBars","test_verify_db_main_element_display","",""
+"Verify progress bar fraction and percentage match expected values
+        
+        Args:
+            dashboard_page: Dashboard page object
+            widget_type: Type of progress bar (invoice, lead, project, task_not_finish)
+            expected_fraction: Expected fraction value (e.g., ""3 / 6"")
+            expected_percent: Expected percentage value (e.g., ""50.00"")
+        ","116","Verify lead progress bar values","tests","2026-09-03","passed","2026-09-03","TestProgressBars","test_verify_db_main_element_display","",""
+"","60","Verify Dashboard page display successfully after login","tests","2026-09-03","passed","2026-09-03","","test_verify_dashboard_display","",""
+"Verify dashboard menu item is highlighted","63","Verify dashboard menu is highlighted","tests","2026-09-03","passed","2026-09-03","TestDashboardDisplay","test_verify_db_main_element_display","",""
